@@ -13,22 +13,11 @@
 <dt><a href="#XMLElement">XMLElement</a> ⇐ <code><a href="#XMLBase">XMLBase</a></code></dt>
 <dd><p>Represents an XML element node.</p>
 </dd>
-<dt><a href="#XMLGenerator">XMLGenerator</a></dt>
-<dd></dd>
 </dl>
 
 ## Functions
 
 <dl>
-<dt><a href="#toXMLGetter">toXMLGetter(element)</a> ⇒ <code>function</code></dt>
-<dd><p>Returns a function that serializes the element to a compact XML string.</p>
-</dd>
-<dt><a href="#toPrettyXMLGetter">toPrettyXMLGetter(element)</a> ⇒ <code>function</code></dt>
-<dd><p>Returns a function that serializes the element to a pretty-formatted XML string.</p>
-</dd>
-<dt><a href="#xmlnsGetter">xmlnsGetter(element, generator, proxy)</a> ⇒ <code>Proxy</code></dt>
-<dd><p>Returns a proxy that handles namespace declarations.</p>
-</dd>
 <dt><a href="#escapeText">escapeText(text)</a> ⇒ <code>string</code></dt>
 <dd><p>Escapes special characters in XML text content.</p>
 </dd>
@@ -222,96 +211,6 @@ Serializes this XML element and its children into a pretty-printed XML string.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | indent | <code>number</code> | <code>0</code> | Indentation level. |
-
-<a name="XMLGenerator"></a>
-
-## XMLGenerator
-**Kind**: global class  
-
-* [XMLGenerator](#XMLGenerator)
-    * [new XMLGenerator()](#new_XMLGenerator_new)
-    * [.createElement(name)](#XMLGenerator+createElement) ⇒ <code>Proxy</code>
-    * [.createComment(content)](#XMLGenerator+createComment) ⇒ [<code>XMLComment</code>](#XMLComment)
-    * [.createCData(content)](#XMLGenerator+createCData) ⇒ [<code>XMLCData</code>](#XMLCData)
-
-<a name="new_XMLGenerator_new"></a>
-
-### new XMLGenerator()
-Initializes the XMLGenerator instance.
-
-<a name="XMLGenerator+createElement"></a>
-
-### xmlGenerator.createElement(name) ⇒ <code>Proxy</code>
-Creates a proxied XML element with the given tag name.
-
-**Kind**: instance method of [<code>XMLGenerator</code>](#XMLGenerator)  
-**Returns**: <code>Proxy</code> - - A proxied function that acts as both an element builder and container.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| name | <code>string</code> | The tag name of the XML element to create. |
-
-<a name="XMLGenerator+createComment"></a>
-
-### xmlGenerator.createComment(content) ⇒ [<code>XMLComment</code>](#XMLComment)
-Creates a new XML comment node.
-
-**Kind**: instance method of [<code>XMLGenerator</code>](#XMLGenerator)  
-**Returns**: [<code>XMLComment</code>](#XMLComment) - - A new comment node.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| content | <code>string</code> | The text content of the comment. |
-
-<a name="XMLGenerator+createCData"></a>
-
-### xmlGenerator.createCData(content) ⇒ [<code>XMLCData</code>](#XMLCData)
-Creates a new CDATA node.
-
-**Kind**: instance method of [<code>XMLGenerator</code>](#XMLGenerator)  
-**Returns**: [<code>XMLCData</code>](#XMLCData) - - A new CDATA node.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| content | <code>string</code> | The text content of the CDATA section. |
-
-<a name="toXMLGetter"></a>
-
-## toXMLGetter(element) ⇒ <code>function</code>
-Returns a function that serializes the element to a compact XML string.
-
-**Kind**: global function  
-**Returns**: <code>function</code> - - A function that returns the XML string.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| element | [<code>XMLElement</code>](#XMLElement) | The XML element to serialize. |
-
-<a name="toPrettyXMLGetter"></a>
-
-## toPrettyXMLGetter(element) ⇒ <code>function</code>
-Returns a function that serializes the element to a pretty-formatted XML string.
-
-**Kind**: global function  
-**Returns**: <code>function</code> - - A function that returns the formatted XML string.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| element | [<code>XMLElement</code>](#XMLElement) | The XML element to serialize. |
-
-<a name="xmlnsGetter"></a>
-
-## xmlnsGetter(element, generator, proxy) ⇒ <code>Proxy</code>
-Returns a proxy that handles namespace declarations.
-
-**Kind**: global function  
-**Returns**: <code>Proxy</code> - - A proxy for handling namespace declarations.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| element | [<code>XMLElement</code>](#XMLElement) | The element to apply namespace attributes to. |
-| generator | [<code>XMLGenerator</code>](#XMLGenerator) | The XMLGenerator instance. |
-| proxy | <code>function</code> | The proxy representing the XML element. |
 
 <a name="escapeText"></a>
 

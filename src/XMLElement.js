@@ -1,4 +1,4 @@
-import { validateName } from './utils.js'
+import { escapeAttribute, escapeText, validateName } from './utils.js'
 import XMLBase from './XMLBase.js'
 
 /**
@@ -46,7 +46,7 @@ class XMLElement extends XMLBase {
         if ( typeof value !== 'string' ) {
             throw new Error( `Attribute value must be a string: ${key}` )
         }
-        this.attributes[key] = value
+        this.attributes[key] = escapeAttribute( value )
         return this
     }
 
@@ -55,16 +55,18 @@ class XMLElement extends XMLBase {
      * @param {XMLChild} child
      * @returns {this}
      */
+
     addChild( child ) {
-        if ( typeof child === 'string' || child instanceof XMLBase ) {
-            this.children.push( child )
+        if ( typeof child === 'string' ) {
+            this.children.push( escapeText( child ) ) // Usa escapeText solo para texto
+        } else if ( child instanceof XMLBase ) {
+            this.children.push( child ) // Agrega la instancia de XMLBase directamente
         } else {
-            console.log( child )
-            console.log( typeof child )
             throw new Error( 'Invalid child node: must be string or instance of XMLBase' )
         }
         return this
     }
+
 
     /**
      * Adds one or more child nodes.

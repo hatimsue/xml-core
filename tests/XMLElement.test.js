@@ -83,4 +83,18 @@ describe( 'XMLElement', () => {
         const el = new XMLElement( { name: 'empty' } )
         expect( el.toPrettyXML() ).toBe( '<empty />\n' )
     } )
+
+    // escape test cases
+    test( 'should escape text correctly', () => {
+        const element = new XMLElement( { name: 'Book', children: ['<title>Book Title</title>'] } )
+        expect( element.toXML() ).toBe( '<Book>&lt;title&gt;Book Title&lt;/title&gt;</Book>' )
+    } )
+
+    test( 'should escape attribute values correctly', () => {
+        const element = new XMLElement( {
+            name: 'Book',
+            attributes: { 'author': 'J.K. Rowling & "Harry Potter"' }
+        } )
+        expect( element.toXML() ).toBe( '<Book author="J.K. Rowling &amp; &quot;Harry Potter&quot;"></Book>' )
+    } )
 } )

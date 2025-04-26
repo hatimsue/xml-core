@@ -1,158 +1,83 @@
-<!-- ![Build Status](https://img.shields.io/github/actions/workflow/status/hatimsue/xmlgenerator/main.yml?branch=main) -->
-![npm](https://img.shields.io/npm/v/@hatimsue/xmlgenerator)
-![Status](https://img.shields.io/badge/status-development-yellow)
+<!-- ![Build Status](https://img.shields.io/github/actions/workflow/status/hatimsue/xml-core/main.yml?branch=main) -->
+[![npm](https://img.shields.io/npm/v/@hatimsue/xml-core)](https://www.npmjs.com/package/@hatimsue/xml-core)
+[![Status](https://img.shields.io/badge/status-development-yellow)](https://github.com/hatimsue/xml-core) 
 
-## xmlgenerator
 
-A lightweight JavaScript library for building XML documents using a clean, declarative syntax.
+## xml-core
+
+This is a lightweight JavaScript library designed for building XML documents. It allows you to create XML element representations as instances of classes, where each object can have attributes and child elements added dynamically. 
+The resulting XML can then be output as a string, ready to be displayed on-screen or saved to a file. 
+
+This package is intended as an intermediate step for projects that require XML generation, providing a foundation that can be further abstracted for ease of use in more specialized libraries.
+
 
 ### Installation
 
 ```bash
-npm install @hatimsue/xmlgenerator
+npm install @hatimsue/xml-core
 ```
-### Overview
-This is a complete example showcasing the core features of the xmlgenerator library:
+### Example
 
 ```javascript
-import {XMLGenerator} from '@hatimsue/xmlgenerator'
+import { XMLCData, XMLComment, XMLElement } from '@hatimsue/xml-core'
 
-const _ = new XMLGenerator().builder
-
-// Array of authors to demonstrate loops using spread + map
 const authors = ['J.K. Rowling', 'J.R.R. Tolkien', 'George R.R. Martin']
 
-// Start building the XML document
-const xml = _.Library
-  .$xmlns('http://example.org/library')              // Declare default namespace
-  .$xmlns.bk('http://example.org/book')              // Declare prefixed namespace "bk"
-  .location('UK')                                     // Add attribute "location"
-  (
-    _.$comment('This is a library XML document'),     // Insert an XML comment
+// Create the root element <Library> with a namespace
+const library = new XMLElement( {
+    name: 'Library',
+    attributes: { location: 'UK' }
+} )
 
-    _.bk.Books.genre('fantasy')(                      // Create <bk:Books genre="fantasy">
-      ...authors.map(author =>                        // Spread multiple <bk:Book> elements
-        _.bk.Book.lang('en')(                          // <bk:Book lang="en">
-          _.bk.Author(author),                         // Add <bk:Author>Author Name</bk:Author>
-          _.bk.Name(`A book by ${author}`)             // Add <bk:Name>Title</bk:Name>
-        )
-      )
-    ),
+// Add a comment
+const comment = new XMLComment( 'This is a library XML document' )
+library.addChild( comment )
 
-    _.bk.ExtraInfo(                                   // Another element with CDATA section
-      _.$cdata('Some unparsed <CDATA> content goes here & should not be escaped.')
-    )
-  )
+// Create <bk:Books> with the "bk" namespace and the "genre" attribute
+const books = new XMLElement( {
+    name: 'Books',
+    attributes: { genre: 'fantasy' }
+} )
 
-// Pretty-print the final XML
-console.log(xml.$toPrettyXML())
+// Add <bk:Book> elements for each author
+authors.forEach( author => {
+    const book = new XMLElement( {
+        name: 'Book',
+        attributes: { lang: 'en' }
+    } )
 
-```
-### Examples
+    // Add Author and Name as child elements
+    book.addChild( new XMLElement( { name: 'Author', children: [author] } ) )
+    book.addChild( new XMLElement( { name: 'Name', children: [`A book by ${author}`] } ) )
 
-<details>
-<summary><strong>Basic usage</strong></summary>
+    books.addChild( book )
+} )
 
-```javascript
-import {XMLGenerator} from '@hatimsue/xmlgenerator'
+// Create an ExtraInfo element with CDATA using the XMLCData class
+const extraInfo = new XMLElement( { name: 'ExtraInfo' } )
+const cdata = new XMLCData( 'Some unparsed <CDATA> content goes here & should not be escaped.' )
+extraInfo.addChild( cdata )
 
-const _ = new XMLGenerator().builder
+// Add the ExtraInfo element to the XML
+library.addChild( books )
+library.addChild( extraInfo )
 
-const xmlDocument = _.Books(
-  _.Book(
-    _.Author('J.K. Rowling'),
-    _.Name('Harry Potter and the Philosopher\'s Stone')
-  )
-)
-
-console.log(xmlDocument.$toPrettyXML())
-/**
- * <Books>
- *   <Book>
- *     <Author>J.K. Rowling</Author>
- *     <Name>Harry Potter and the Philosopher's Stone</Name>
- *   </Book>
- * </Books>
- */
-```
-</details>
-<details> <summary><strong>With attributes</strong></summary>
-
-```javascript
-import {XMLGenerator} from '@hatimsue/xmlgenerator'
-
-const _ = new XMLGenerator().builder
-
-const xmlDocument = 
-_.Books.category('fiction').country('UK')(
-  _.Book.lang('en')(
-    _.Author('J.K. Rowling'),
-    _.Name('Harry Potter and the Philosopher\'s Stone')
-  )
-)
-
-console.log(xmlDocument.$toPrettyXML())
-/**
- * <Books category="fiction" country="UK">
- *   <Book lang="en">
- *     <Author>J.K. Rowling</Author>
- *     <Name>Harry Potter and the Philosopher's Stone</Name>
- *   </Book>
- * </Books>
- */
+// Convert the XML to a pretty-printed format
+console.log( library.toPrettyXML() )
 
 ```
-</details> 
-<details> <summary><strong>With namespaces</strong></summary>
-
-```javascript
-
-import {XMLGenerator} from '@hatimsue/xmlgenerator'
-
-const _ = new XMLGenerator().builder
-
-const xmlDocument = 
-_.Books
-  .$xmlns('http://example.org/books') // default namespace
-  .$xmlns.bk('http://example.org/book') // prefix namespace
-  .$xmlns.ss('http://example.org/ss')  // prefix namespace
-  .category('fiction')
-  .country('UK')(
-    _.bk.Book.lang('en')(
-      _.bk.Author('J.K. Rowling'),
-      _.bk.Name('Harry Potter and the Philosopher\'s Stone')
-    )
-)
-
-console.log(xmlDocument.$toPrettyXML())
-/**
- * <Books xmlns="http://example.org/books" xmlns:bk="http://example.org/book" category="fiction" country="UK">
- *   <bk:Book lang="en">
- *     <bk:Author>J.K. Rowling</bk:Author>
- *     <bk:Name>Harry Potter and the Philosopher's Stone</bk:Name>
- *   </bk:Book>
- * </Books>
- */
-```
-</details>
 
 ### Reference
+The classes are designed to be simple and easy to read, so it's recommended to refer to them directly in the `src/` folder or consult the auto-generated documentation in `API.md`. Additionally, you can generate the documentation by running `npm run doc`, which will create the documentation in the `docs` folder. However, the following table provides some basic usage examples, though it is not exhaustive.
 
 | **Concept**                    | **Description**                                                                 | **Syntax / Example**                              | **Expected XML Output**                   |
 |--------------------------------|---------------------------------------------------------------------------------|---------------------------------------------------|--------------------------------------------|
-| **Create a tag**               | Use a method named after the tag to create it. Must be called with `()`.        | `_.Book()`                                        | `<Book/>`                                  |
-| **Add content**                | Pass strings or nested tags as arguments inside the parentheses.                | `_.Book('Title')`                                 | `<Book>Title</Book>`                       |
-| **Add attribute**              | Chain attribute methods before calling the tag with `()`.                       | `_.Book.lang('en')()`                             | `<Book lang="en"/>`                        |
-| **Chain attributes**           | Chain multiple attribute methods before final `()`.                             | `_.Book.lang('en').year('2001')()`                | `<Book lang="en" year="2001"/>`           |
-| **Add default namespace**      | Call `_$xmlns(url)` on the element before `()`.                                | `_.Books._$xmlns('http://example.org')()`         | `<Books xmlns="http://example.org"/>`     |
-| **Add namespaced prefix**      | Use `_$xmlns.prefix(url)` to declare namespaced prefixes.                       | `_.Books._$xmlns.lib('http://example.org/lib')()` | `<Books xmlns:lib="http://example.org/lib"/>` |
-| **Use namespaced tags**        | Use prefix as property (e.g., `_.lib.TagName()`) after declaring it.            | `_.lib.Book()`                                    | `<lib:Book/>`                              |
-| **Add comment**                | Insert with `_.$comment('text')` as a child element.                           | `_.$comment('Note here')`                         | `<!-- Note here -->`                       |
-| **Add CDATA section**          | Use `_.$cdata('value')` to wrap raw XML content safely.                         | `_.$cdata('<tag>')`                               | `<![CDATA[<tag>]]>`                        |
-| **Use a loop/dynamic content** | Use spread syntax with `.map()` or other loops that return tag arrays.          | `...['a','b'].map(n => _.Name(n))`                | `<Name>a</Name>\n<Name>b</Name>`          |
-| **Single line output**         | Use `$toXML()` to generate compact XML string.                                 | `element.$toXML()`                                | `<Book><Author>J.K.</Author></Book>`      |
-| **Multiline XML output**       | Use `$toPrettyXML()` to output indented XML for readability.                   | `element.$toPrettyXML()`                          | Formatted multi-line XML                  |
-| **Root element**               | Start your XML tree from a top-level tag like `_.Library(...)`.                 | `const xml = _.Library(...)`                      | `<Library>...</Library>`                   |
-| **Output XML**                 | Log or return the result from `$toXML()` or `$toPrettyXML()`.                  | `console.log(xml.$toPrettyXML())`                 | Console output of the XML                 |
-
-
+| **Create a tag**               | Use the `XMLElement` class constructor to create a tag.              | `new XMLElement('Book')`                          | `<Book/>`                                  |
+| **Add content**                | Pass strings or nested elements to the tag using methods like `addChild`.       | `book.addChild('Title')`                          | `<Book>Title</Book>`                       |
+| **Add attribute**              | Use the `setAttribute` method to add attributes to the tag.                      | `book.setAttribute('lang', 'en')`                 | `<Book lang="en"/>`                        |
+| **Chain attributes**           | Chain multiple calls to `setAttribute` to add more attributes.                  | `book.setAttribute('lang', 'en').setAttribute('year', '2001')` | `<Book lang="en" year="2001"/>`           |
+| **Add comment**                | Create a new `XMLComment` and add it using `addChild`.                           | `book.addChild(new XMLComment('Note here'))`       | `<!-- Note here -->`                       |
+| **Add CDATA section**          | Use the `addChild` method to insert a `XMLCData` section.                        | `book.addChild(new XMLCData('<tag>'))`             | `<![CDATA[<tag>]]>`                        |
+| **Single line output**         | Use the `toXML()` method to generate a compact XML string.                      | `book.toXML()`                                   | `<Book lang="en"><Author>J.K. Rowling</Author></Book>` |
+| **Multiline XML output**       | Use the `toPrettyXML()` method to generate an indented XML string.             | `book.toPrettyXML()`                             | Formatted multi-line XML                   |
+| **Root element**               | Start your XML tree with a root tag using the class constructor.                | `const library = new XMLElement('Library')`        | `<Library>...</Library>`                   |

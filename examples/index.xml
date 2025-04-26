@@ -1,33 +1,21 @@
-<Library xmlns="http://example.org/library" xmlns:bk="http://example.org/book" location="UK">
+<Library location="UK">
   <!-- This is a library XML document -->
-  <bk:Books genre="fantasy">
-    <bk:Book lang="en">
-      <bk:Author>
-        J.K. Rowling
-      </bk:Author>
-      <bk:Name>
-        A book by J.K. Rowling
-      </bk:Name>
-    </bk:Book>
-    <bk:Book lang="en">
-      <bk:Author>
-        J.R.R. Tolkien
-      </bk:Author>
-      <bk:Name>
-        A book by J.R.R. Tolkien
-      </bk:Name>
-    </bk:Book>
-    <bk:Book lang="en">
-      <bk:Author>
-        George R.R. Martin
-      </bk:Author>
-      <bk:Name>
-        A book by George R.R. Martin
-      </bk:Name>
-    </bk:Book>
-  </bk:Books>
-  <bk:ExtraInfo>
+  <Books genre="fantasy">
+    <Book lang="en">
+      <Author>J.K. Rowling</Author>
+      <Name>A book by J.K. Rowling</Name>
+    </Book>
+    <Book lang="en">
+      <Author>J.R.R. Tolkien</Author>
+      <Name>A book by J.R.R. Tolkien</Name>
+    </Book>
+    <Book lang="en">
+      <Author>George R.R. Martin</Author>
+      <Name>A book by George R.R. Martin</Name>
+    </Book>
+  </Books>
+  <ExtraInfo>
 <![CDATA[Some unparsed <CDATA> content goes here & should not be escaped.]]>
-  </bk:ExtraInfo>
+  </ExtraInfo>
 </Library>
 

@@ -8,13 +8,6 @@
 | `XMLCData.js`        | ⬜ No       |
 | `XMLComment.js`      | ⬜ No       |
 | `XMLElement.js`      | ⬜ No       |
-| `XMLGenerator.js`    | ✅ No       |
-
-### XMLGenerator
-
-| Task                                                                     | Status | Notes                                                             |
-|--------------------------------------------------------------------------|--------|-------------------------------------------------------------------|
-| Review behavior in `toPrettyXML()` when an element has only one child    | ⬜     | Should render on the same line instead of multiline               |
 
 ### XMLElement
 
@@ -25,8 +18,3 @@
 | Validate tag names using `name` and `qname` rules from external validation package   | ⬜      | Ensure conformance to XML naming standards                           |
 | Improve error messages when invalid children or attributes are added                 | ⬜      | Better DX (developer experience)                                      |
 
-### DEBUG
-
-| Task                                                                 | Status  | Notes                                                                 |
-|----------------------------------------------------------------------|---------|-----------------------------------------------------------------------|
-| Improve error logs to better identify root causes during debugging   | ⬜      | Include context like tag name, method, or invalid input              |

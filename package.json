@@ -1,7 +1,7 @@
 {
-  "name": "@hatimsue/xmlgenerator",
-  "version": "1.0.2",
-  "description": "A lightweight JavaScript library to generate XML using a declarative syntax.",
+  "name": "@hatimsue/xml-core",
+  "version": "1.0.0",
+  "description": "A core library for creating XML elements and building XML documents.",
   "license": "MIT",
   "author": "github/hatimsue",
   "type": "module",
@@ -11,17 +11,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hatimsue/xmlgenerator.git"
+    "url": "git+https://github.com/hatimsue/xml-core.git"
   },
   "bugs": {
-    "url": "https://github.com/hatimsue/xmlgenerator/issues"
+    "url": "https://github.com/hatimsue/xml-core/issues"
   },
-  "homepage": "https://github.com/hatimsue/xmlgenerator#readme",
-  "keywords": ["xml", "generator", "builder" ,"xml-builder", "declarative", "javascript", "xmlgenerator", "xml-generator"],
+  "homepage": "https://github.com/hatimsue/xml-core#readme",
+  "keywords": ["xml", "generator", "builder" ,"xml-builder", "declarative", "javascript", "xml-core", "xml-generator"],
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
-    "doc": "jsdoc src -d docs"
+    "doc": "jsdoc src -d docs",
+    "doc:api": "jsdoc2md src/* > API.md"
   },
   "devDependencies": {
     "eslint": "^9.22.0",
