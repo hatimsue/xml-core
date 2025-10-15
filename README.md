@@ -23,7 +23,7 @@ import { XMLCData, XMLComment, XMLElement } from '@hatimsue/xml-core'
 
 const authors = ['J.K. Rowling', 'J.R.R. Tolkien', 'George R.R. Martin']
 
-// Create the root element <Library> with a namespace
+// Create the root element <Library>
 const library = new XMLElement( {
     name: 'Library',
     attributes: { location: 'UK' }
@@ -33,13 +33,13 @@ const library = new XMLElement( {
 const comment = new XMLComment( 'This is a library XML document' )
 library.addChild( comment )
 
-// Create <bk:Books> with the "bk" namespace and the "genre" attribute
+// Create <Books> with the "genre" attribute
 const books = new XMLElement( {
     name: 'Books',
     attributes: { genre: 'fantasy' }
 } )
 
-// Add <bk:Book> elements for each author
+// Add <Book> elements for each author
 authors.forEach( author => {
     const book = new XMLElement( {
         name: 'Book',
@@ -53,6 +53,12 @@ authors.forEach( author => {
     books.addChild( book )
 } )
 
+// Find an element by tag name and print its text content
+console.log( '--- Example: innerText of first <Book> element ---' )
+const firstBook = books.getElementByTagName( 'Book' )
+console.log( firstBook.innerText )
+console.log( '-----------------------------------------------\n' )
+
 // Create an ExtraInfo element with CDATA using the XMLCData class
 const extraInfo = new XMLElement( { name: 'ExtraInfo' } )
 const cdata = new XMLCData( 'Some unparsed <CDATA> content goes here & should not be escaped.' )
@@ -63,7 +69,9 @@ library.addChild( books )
 library.addChild( extraInfo )
 
 // Convert the XML to a pretty-printed format
+console.log( '--- Example: Pretty-printed XML ---' )
 console.log( library.toPrettyXML() )
+console.log( '-----------------------------------' )
 
 ```
 

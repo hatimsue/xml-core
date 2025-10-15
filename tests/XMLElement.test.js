@@ -97,4 +97,99 @@ describe( 'XMLElement', () => {
         } )
         expect( element.toXML() ).toBe( '<Book author="J.K. Rowling &amp; &quot;Harry Potter&quot;"></Book>' )
     } )
+
+
 } )
+
+describe( 'XMLElement.getElementByTagName', () => {
+    let books, book, author, bookName
+
+    beforeEach( () => {
+        books = new XMLElement( { name: 'books' } )
+
+        book = new XMLElement( { name: 'book' } )
+        author = new XMLElement( { name: 'author' } )
+        bookName = new XMLElement( { name: 'name' } )
+        bookName.addChild( 'One Hundred Years of Solitude' )
+        book.addChildren( [author, bookName] )
+        books.addChild( book )
+    } )
+
+    test( 'should find a deep child element by tagName', () => {
+        const element = books.getElementByTagName( 'name' )
+        expect( element ).toBeInstanceOf( XMLElement )
+        expect( element.children[0] ).toBe( 'One Hundred Years of Solitude' )
+    } )
+
+    test( 'should return the element itself if the parent matches the tagName', () => {
+        const element = bookName.getElementByTagName( 'name' )
+        expect( element ).toBe( bookName )
+        expect( element.children[0] ).toBe( 'One Hundred Years of Solitude' )
+    } )
+
+    test( 'should return the first matching element if multiple exist', () => {
+        const anotherName = new XMLElement( { name: 'name' } )
+        anotherName.addChild( 'Love in the Time of Cholera' )
+        book.addChild( anotherName )
+
+        const element = books.getElementByTagName( 'name' )
+        expect( element.children[0] ).toBe( 'One Hundred Years of Solitude' )
+    } )
+
+    test( 'should return null if no element matches', () => {
+        const element = books.getElementByTagName( 'publisher' )
+        expect( element ).toBeNull()
+    } )
+} )
+
+describe( 'XMLElement.innerText', () => {
+    let book, author, bookName, bookDescription
+
+    beforeEach( () => {
+        book = new XMLElement( { name: 'book' } )
+
+        author = new XMLElement( { name: 'author' } )
+        author.addChild( 'Gabriel García Márquez' )
+
+        bookName = new XMLElement( { name: 'name' } )
+        bookName.addChild( 'One Hundred Years of Solitude' )
+
+        bookDescription = new XMLElement( { name: 'description' } )
+        bookDescription.addChild( 'A masterpiece of magical realism.' )
+
+        book.addChildren( [author, bookName, bookDescription] )
+    } )
+
+    test( 'should return direct text of an element', () => {
+        expect( bookName.innerText ).toBe( 'One Hundred Years of Solitude' )
+    } )
+
+    test( 'should return combined text including nested children', () => {
+        const paragraph = new XMLElement( { name: 'paragraph' } )
+        paragraph.addChild( 'This is a nested ' )
+        const bold = new XMLElement( { name: 'bold' } )
+        bold.addChild( 'text' )
+        paragraph.addChild( bold )
+
+        book.addChild( paragraph )
+
+        expect( paragraph.innerText ).toBe( 'This is a nested text' )
+    } )
+
+    test( 'should concatenate multiple children with text', () => {
+        const multiChild = new XMLElement( { name: 'multiChild' } )
+        multiChild.addChild( 'Part 1, ' )
+        multiChild.addChild( 'Part 2, ' )
+        multiChild.addChild( 'Part 3' )
+
+        book.addChild( multiChild )
+
+        expect( multiChild.innerText ).toBe( 'Part 1, Part 2, Part 3' )
+    } )
+
+    test( 'should return empty string if there is no text', () => {
+        const emptyNode = new XMLElement( { name: 'empty' } )
+        expect( emptyNode.innerText ).toBe( '' )
+    } )
+} )
+

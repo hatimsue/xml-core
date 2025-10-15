@@ -144,6 +144,39 @@ class XMLElement extends XMLBase {
         result += `${tab}</${this.name}>\n`
         return result
     }
+    /**
+     * Returns the first child element (recursively) with the given tag name.
+     * @param {string} tagName - The name of the tag to search for.
+     * @returns {XMLElement|null} The first matching element, or null if not found.
+     */
+    getElementByTagName( tagName ) {
+        if ( this.name === tagName ) return this
+
+        for ( const child of this.children ) {
+            if ( child instanceof XMLElement ) {
+                const found = child.getElementByTagName( tagName )
+                if ( found ) return found
+            }
+        }
+
+        return null
+    }
+    /**
+     * Returns all text content of this element and its children recursively.
+     * This is similar to the `innerText` property in the DOM.
+     * @type {string}
+     */
+    get innerText() {
+        let result = ''
+        for( const child of this.children ) {
+            if( typeof child == 'string' ) {
+                result += child
+            }else{
+                result += child.innerText
+            }
+        }
+        return result
+    }
 }
 
 export default XMLElement

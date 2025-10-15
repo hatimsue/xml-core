@@ -145,11 +145,13 @@ Represents an XML element node.
 
 * [XMLElement](#XMLElement) ⇐ [<code>XMLBase</code>](#XMLBase)
     * [new XMLElement(options)](#new_XMLElement_new)
+    * [.innerText](#XMLElement+innerText) : <code>string</code>
     * [.setAttr(key, value)](#XMLElement+setAttr) ⇒ <code>this</code>
     * [.addChild(child)](#XMLElement+addChild) ⇒ <code>this</code>
     * [.addChildren(...children)](#XMLElement+addChildren) ⇒ <code>this</code>
     * [.toXML()](#XMLElement+toXML) ⇒ <code>string</code>
     * [.toPrettyXML(indent)](#XMLElement+toPrettyXML) ⇒ <code>string</code>
+    * [.getElementByTagName(tagName)](#XMLElement+getElementByTagName) ⇒ [<code>XMLElement</code>](#XMLElement) \| <code>null</code>
 
 <a name="new_XMLElement_new"></a>
 
@@ -159,6 +161,13 @@ Represents an XML element node.
 | --- | --- | --- |
 | options | [<code>XMLElementOptions</code>](#XMLElementOptions) | XML element options |
 
+<a name="XMLElement+innerText"></a>
+
+### xmlElement.innerText : <code>string</code>
+Returns all text content of this element and its children recursively.
+This is similar to the `innerText` property in the DOM.
+
+**Kind**: instance property of [<code>XMLElement</code>](#XMLElement)  
 <a name="XMLElement+setAttr"></a>
 
 ### xmlElement.setAttr(key, value) ⇒ <code>this</code>
@@ -211,6 +220,18 @@ Serializes this XML element and its children into a pretty-printed XML string.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | indent | <code>number</code> | <code>0</code> | Indentation level. |
+
+<a name="XMLElement+getElementByTagName"></a>
+
+### xmlElement.getElementByTagName(tagName) ⇒ [<code>XMLElement</code>](#XMLElement) \| <code>null</code>
+Returns the first child element (recursively) with the given tag name.
+
+**Kind**: instance method of [<code>XMLElement</code>](#XMLElement)  
+**Returns**: [<code>XMLElement</code>](#XMLElement) \| <code>null</code> - The first matching element, or null if not found.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| tagName | <code>string</code> | The name of the tag to search for. |
 
 <a name="escapeText"></a>
 
