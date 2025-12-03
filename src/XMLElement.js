@@ -70,7 +70,7 @@ class XMLElement extends XMLBase {
 
     /**
      * Adds one or more child nodes.
-     * @param {XMLChild[]} children
+     * @param {...(XMLChild | XMLChild[])} children - One or more child nodes or arrays of child nodes
      * @returns {this}
      */
     addChildren( ...children ) {
