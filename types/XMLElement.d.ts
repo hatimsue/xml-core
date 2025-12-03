@@ -59,7 +59,7 @@ declare class XMLElement extends XMLBase {
      * @param {XMLChild[]} children
      * @returns {this}
      */
-    addChildren(...children: XMLChild[]): this;
+    addChildren(...children: (XMLChild | XMLChild[])[]): this;
     /**
      * Serializes this XML element and its children into a pretty-printed XML string.
      * @param {number} indent - Indentation level.
